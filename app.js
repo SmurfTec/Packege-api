@@ -14,9 +14,10 @@ const app = express();
 
 const userRouter = require('./src/routers/userRouter');
 const authRouter = require('./src/routers/authRouter');
+const contactRouter = require('./src/routers/contactRouter');
+const faqRouter = require('./src/routers/faqRouter');
 
 const globalErrorHandler = require('./src/middlewares/globalErrorHandler');
-
 const AppError = require('./src/helpers/appError');
 
 // view engine setup
@@ -68,6 +69,9 @@ app.use(xss()); //    protect from molision code coming from html
 // routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/contacts', contactRouter);
+app.use('/api/faqs', faqRouter);
+
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all('*', (req, res, next) => {

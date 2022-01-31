@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema(
       // unique: true,
       // required: [true, 'Please tell us your lastname!'],
     },
-    info: { type: String, trim: true },
     phoneNumber: Number,
     email: {
       type: String,

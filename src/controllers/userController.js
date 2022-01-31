@@ -98,6 +98,36 @@ exports.getContacts = catchAsync(async (req, res, next) => {
   });
 });
 
+//* FAQs
+
+exports.createFaq = catchAsync(async (req, res, next) => {
+  const validate = faqsValidation.validate(req.body);
+  if (validate.error) {
+    return next(new AppError(validate.error, 400));
+  }
+
+  const { faq } = await UserServices.createFaq(req.body);
+
+  res.status(200).json({
+    status: 'success',
+    faq,
+  });
+});
+
+exports.getFaqs = catchAsync(async (req, res, next) => {
+  const { faq } = await UserServices.getFaqs();
+
+  res.status(200).json({
+    status: 'success',
+    length: faq.length,
+    faq,
+  })
+  
+});
+
+
+//* Subscription
+
 exports.subscribe = catchAsync(async (req, res, next) => {
   const validate = subscribeValidation.validate(req.body);
   if (validate.error) {

@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Buyer = require('../models/Buyer');
 const Vendor = require('../models/Vendor');
 const Contact = require('../models/Contact');
+const Faq = require('../models/Faqs');
 const Subscribe = require('../models/Subscribe');
 const AppError = require('../helpers/appError');
 
@@ -96,6 +97,24 @@ class UserServices {
   static async getContacts() {
     const contacts = await Contact.find();
     return { contacts };
+  }
+
+  //* CREATE-FAQ
+  static async createFaq(userData) {
+    const { question, ansqwer } = userData;
+
+    const faq = await Faq.create({
+      question,
+      ansqwer,
+    });
+
+    return { faq };
+  }
+
+  //* GET-FAQs
+  static async getFaqs() {
+    const faqs = await Faq.find();
+    return { faqs };
   }
 
   //* SUBSCRIBE
