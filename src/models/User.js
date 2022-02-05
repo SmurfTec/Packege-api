@@ -4,8 +4,6 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
 const baseOptions = {
-  discriminatorKey: '__type',
-  collection: 'User',
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true },
@@ -13,6 +11,12 @@ const baseOptions = {
 
 const userSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      enum: ['Mr', 'Mr.s'],
+    },
+    image: String,
+    contact: Number,
     firstName: {
       type: String,
       trim: true,
@@ -29,7 +33,6 @@ const userSchema = new mongoose.Schema(
       // unique: true,
       // required: [true, 'Please tell us your lastname!'],
     },
-    phoneNumber: Number,
     email: {
       type: String,
       required: [true, 'Please provide your email'],
@@ -40,9 +43,9 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['admin', 'vendor', 'buyer'],
+      enum: ['admin', 'user'],
       required: [true, `Please Provide Role`],
-      default: 'buyer',
+      default: 'user',
     },
     password: {
       type: String,

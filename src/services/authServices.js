@@ -1,20 +1,12 @@
 const User = require('../models/User');
-const Vendor = require('../models/Vendor');
-const Buyer = require('../models/Buyer');
 const sendMail = require('../helpers/email');
 const AppError = require('../helpers/appError');
 
 class AuthServices {
   //* SIGNUP
   static async signup(userData) {
-    let user;
-    if (userData.role === 'buyer') {
-      user = await Buyer.create(userData);
-    } else if (userData.role === 'vendor') {
-      user = await Vendor.create(userData);
-    } else {
-      user = await User.create(userData);
-    }
+    let user = await User.create(userData);
+
     // Generate Account Activation Link
     const activationToken = user.createAccountActivationLink();
     user.save({ validateBeforeSave: false });
@@ -25,7 +17,7 @@ class AuthServices {
     sendMail({
       email: user.email,
       message,
-      subject: 'Your Account Activation Link for Smurf App !',
+      subject: 'Your Account Activation Link for Package App !',
       user,
       template: 'signupEmail.ejs',
       url: activationURL,

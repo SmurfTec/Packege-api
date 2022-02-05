@@ -1,6 +1,4 @@
 const User = require('../models/User');
-const Buyer = require('../models/Buyer');
-const Vendor = require('../models/Vendor');
 const Contact = require('../models/Contact');
 const Faq = require('../models/Faqs');
 const Subscribe = require('../models/Subscribe');
@@ -33,36 +31,15 @@ class UserServices {
   }
 
   //* UPDATEME
-  static async UpdateMe(userId, body, role, next) {
-    let updatedUser;
-    if (role === 'buyer') {
-      updatedUser = await Buyer.findByIdAndUpdate(
-        userId,
-        { ...body },
-        {
-          runValidators: true,
-          new: true,
-        }
-      );
-    } else if (role === 'vendor') {
-      updatedUser = await Vendor.findByIdAndUpdate(
-        userId,
-        { ...body },
-        {
-          runValidators: true,
-          new: true,
-        }
-      );
-    } else {
-      updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { ...body },
-        {
-          runValidators: true,
-          new: true,
-        }
-      );
-    }
+  static async UpdateMe(userId, body, next) {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { ...body },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
 
     if (!updatedUser)
       return next(new AppError(`Can't find any user with id ${userId}`, 404));

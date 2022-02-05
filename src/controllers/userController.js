@@ -51,7 +51,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   const { updatedUser } = await UserServices.UpdateMe(
     req.user._id,
     req.body,
-    req.user.role,
     next
   );
 
@@ -121,10 +120,8 @@ exports.getFaqs = catchAsync(async (req, res, next) => {
     status: 'success',
     length: faq.length,
     faq,
-  })
-  
+  });
 });
-
 
 //* Subscription
 
