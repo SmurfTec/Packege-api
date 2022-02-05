@@ -14,6 +14,7 @@ router
 router.route('/').get(protect, restrictTo('admin'), userController.getAllUsers);
 
 router.patch('/updatePassword', protect, authController.updatePassword);
+
 router.post('/subscribe', userController.subscribe);
 
 router
