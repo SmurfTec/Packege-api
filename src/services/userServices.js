@@ -78,13 +78,7 @@ class UserServices {
 
   //* CREATE-FAQ
   static async createFaq(userData) {
-    const { question, ansqwer } = userData;
-
-    const faq = await Faq.create({
-      question,
-      ansqwer,
-    });
-
+    const faq = await Faq.create(userData);
     return { faq };
   }
 
@@ -92,6 +86,32 @@ class UserServices {
   static async getFaqs() {
     const faqs = await Faq.find();
     return { faqs };
+  }
+
+  //*
+  static async UpdateFaq(Id, body, next) {
+    const faq = await Faq.findByIdAndUpdate(
+      Id,
+      { ...body },
+      {
+        runValidators: true,
+        new: true,
+      }
+    );
+
+    if (!faq)
+      return next(new AppError(`Can't find any Faq with id ${Id}`, 404));
+
+    return { faq };
+  }
+
+  //*
+  static async DeleteFaq(Id, next) {
+    const faq = await Faq.findOneAndDelete(Id);
+
+    if (!faq) return next(new AppError(`No Faq found against id ${Id}`, 404));
+
+    return { faq };
   }
 
   //* SUBSCRIBE

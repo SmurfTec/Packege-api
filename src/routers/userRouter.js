@@ -23,8 +23,18 @@ router
   .post(userController.createContact);
 
 router
+  .route('/faqs')
+  .get(userController.getFaqs)
+  .post(protect, restrictTo('admin'), userController.createFaq);
+
+router
   .route('/:id')
   .get(protect, userController.getUser)
   .delete(protect, restrictTo('admin'), userController.deleteUser);
+
+router
+  .route('/faqs/:id')
+  .patch(protect, restrictTo('admin'), userController.updateFaq)
+  .delete(protect, restrictTo('admin'), userController.deleteFaq);
 
 module.exports = router;

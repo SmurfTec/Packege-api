@@ -4,6 +4,7 @@ const {
   updateValidation,
   contactValidation,
   subscribeValidation,
+  faqValidation,
 } = require('../validations/userValidations');
 const AppError = require('../helpers/appError');
 
@@ -100,7 +101,7 @@ exports.getContacts = catchAsync(async (req, res, next) => {
 //* FAQs
 
 exports.createFaq = catchAsync(async (req, res, next) => {
-  const validate = faqsValidation.validate(req.body);
+  const validate = faqValidation.validate(req.body);
   if (validate.error) {
     return next(new AppError(validate.error, 400));
   }
@@ -114,11 +115,29 @@ exports.createFaq = catchAsync(async (req, res, next) => {
 });
 
 exports.getFaqs = catchAsync(async (req, res, next) => {
-  const { faq } = await UserServices.getFaqs();
+  const { faqs } = await UserServices.getFaqs();
 
   res.status(200).json({
     status: 'success',
-    length: faq.length,
+    length: faqs.length,
+    faqs,
+  });
+});
+
+exports.updateFaq = catchAsync(async (req, res, next) => {
+  const { faq } = await UserServices.UpdateFaq(req.params.id, req.body, next);
+
+  res.status(200).json({
+    status: 'success',
+    faq,
+  });
+});
+
+exports.deleteFaq = catchAsync(async (req, res, next) => {
+  const { faq } = await UserServices.DeleteFaq(req.params.id, next);
+
+  res.status(200).json({
+    status: 'success',
     faq,
   });
 });

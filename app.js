@@ -76,9 +76,6 @@ app.use('/api/users', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/posts', postRouter);
 
-// app.use('/api/contacts', contactRouter);
-// app.use('/api/faqs', faqRouter);
-
 // handling all (get,post,update,delete.....) unhandled routes
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on the server`, 404));

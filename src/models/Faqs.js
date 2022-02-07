@@ -6,13 +6,11 @@ const faqsSchema = new mongoose.Schema(
     question: {
       type: String,
       trim: true,
-      validate: [validator.isEmail, 'Please provide a valid email']
     },
-    answer:{
+    answer: {
       type: String,
       trim: true,
-      validate: [validator.isEmail, 'Please provide a valid email']
-    }
+    },
   },
   {
     timestamps: true,
