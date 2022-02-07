@@ -14,9 +14,11 @@ const app = express();
 
 const userRouter = require('./src/routers/userRouter');
 const authRouter = require('./src/routers/authRouter');
+const categoryRouter = require('./src/routers/categoryRouter');
+const postRouter = require('./src/routers/postRouter');
+
 // const contactRouter = require('./src/routers/contactRouter');
 // const faqRouter = require('./src/routers/faqRouter');
-const deliveryRequestRouter = require('./src/routers/deliveryRequestRouter');
 
 const globalErrorHandler = require('./src/middlewares/globalErrorHandler');
 const AppError = require('./src/helpers/appError');
@@ -71,10 +73,11 @@ app.use(xss()); //    protect from molision code coming from html
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/category', categoryRouter);
+app.use('/api/posts', postRouter);
 
 // app.use('/api/contacts', contactRouter);
 // app.use('/api/faqs', faqRouter);
-app.use('/api/deliveryRequests', deliveryRequestRouter);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all('*', (req, res, next) => {

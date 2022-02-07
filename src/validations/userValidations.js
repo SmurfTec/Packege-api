@@ -28,10 +28,6 @@ module.exports = {
   categoryValidation: Joi.object({
     name: Joi.string().required(),
   }),
-  reviewValidation: Joi.object({
-    rating: Joi.number().required(),
-    comment: Joi.string().required(),
-  }),
   subscribeValidation: Joi.object({
     email: Joi.string().email().required(),
   }),

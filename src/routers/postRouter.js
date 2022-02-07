@@ -7,7 +7,14 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(protect, restrictTo('admin'), postController.getFaqs)
-  .post(postController.createFaq);
+  .get(postController.getPosts)
+  .post(protect, postController.createPost);
+
+router.route('/my').get(protect, postController.getMyPosts);
+
+router
+  .route('/:id')
+  .patch(protect, postController.updatePost)
+  .delete(protect, postController.deletePost);
 
 module.exports = router;
