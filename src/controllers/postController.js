@@ -7,7 +7,7 @@ const {
 } = require('../validations/postValidations');
 
 exports.getPosts = catchAsync(async (req, res, next) => {
-  const { posts } = await PostServices.GetAll();
+  const { posts } = await PostServices.GetAll(req.query);
 
   res.status(200).json({
     status: 'success',
@@ -17,7 +17,7 @@ exports.getPosts = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyPosts = catchAsync(async (req, res, next) => {
-  const { posts } = await PostServices.GetMyPosts(req.user._id);
+  const { posts } = await PostServices.GetMyPosts(req.user._id, req.query);
 
   res.status(200).json({
     status: 'success',

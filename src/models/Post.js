@@ -51,5 +51,12 @@ postSchema.pre(/^find/, function (next) {
   next();
 });
 
+postSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'categories',
+  });
+  next();
+});
+
 const Post = mongoose.model('Post', postSchema);
 module.exports = Post;

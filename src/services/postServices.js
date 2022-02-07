@@ -4,14 +4,21 @@ const AppError = require('../helpers/appError');
 class PostServices {
   //*
 
-  static async GetAll() {
-    const posts = await Post.find();
+  static async GetAll(query) {
+    const { isDeliveryRequest } = query;
+    let queryData = Post.find();
+    if (isDeliveryRequest) queryData.find({ isDeliveryRequest });
+    const posts = await queryData;
+
     return { posts };
   }
 
   //*
-  static async GetMyPosts(userId) {
-    const posts = await Post.find({ user: userId });
+  static async GetMyPosts(userId, query) {
+    const { isDeliveryRequest } = query;
+    let queryData = Post.find();
+    if (isDeliveryRequest) queryData.find({ user: userId, isDeliveryRequest });
+    const posts = await queryData;
     return { posts };
   }
 
