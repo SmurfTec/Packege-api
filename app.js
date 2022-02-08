@@ -9,6 +9,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const path = require('path');
 const cookieSession = require('cookie-session');
+const request = require('request');
 
 const app = express();
 
@@ -70,6 +71,43 @@ app.use(mongoSanitize()); //   filter out the dollar signs protect from  query i
 app.use(xss()); //    protect from molision code coming from html
 
 // routes
+
+app.post('/mailchimp', async (req, res, next) => {
+  const { email } = req.body;
+
+  // construct request data
+  const data = { members: [{ email_address: email, status: 'subscribed' }] };
+
+  const postData = JSON.stringify(data);
+
+  const options = {
+    url: 'https://us14.api.mailchimp.com/3.0/lists/38f732a772',
+    method: 'POST',
+    headers: {
+      Authorization: 'auth 0f0013ebd162f05a9c549a8a82fdc932-us14',
+    },
+    body: postData,
+  };
+
+  request(options, (err, response, body) => {
+    if (err) {
+      res.status(400).json({
+        status: 'fail',
+      });
+    } else {
+      if (response.statusCode === 200) {
+        res.status(200).json({
+          status: 'success',
+          email,
+        });
+      } else {
+        res.status(400).json({
+          status: 'fail',
+        });
+      }
+    }
+  });
+});
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
