@@ -22,9 +22,7 @@ const postSchema = new mongoose.Schema(
         ref: 'Category',
       },
     ],
-    weightFrom: Number,
-    weightTo: Number,
-
+    weight: Number,
     //* Dimensions
     length: Number,
     breadth: Number,
@@ -33,7 +31,7 @@ const postSchema = new mongoose.Schema(
     urgent: {
       type: String,
       enum: ['low', 'medium', 'high'],
-      required: [true, `Please Provide `],
+      required: [true, `Please Provide a priority`],
     },
 
     deliveryDate: Date,
