@@ -52,6 +52,18 @@ if (process.env.NODE_ENV === 'development') {
 // $ CORS
 app.use(cors());
 
+//* this will go to env
+// clients=["https://rei-client.herokuapp.com","http://rei-client.herokuapp.com", "https://app.reithinkmedia.com"]
+
+// var corsOptions = {
+//   origin: JSON.parse(process.env.clients),
+//   optionsSuccessStatus: 200,
+//   methods: "GET, POST, DELETE, PUT",
+// };
+// app.use(cors(corsOptions));
+
+
+
 //  set limit request from same API in timePeroid from same ip
 const limiter = rateLimit({
   max: 100, //   max number of limits
