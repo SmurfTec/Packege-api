@@ -16,8 +16,14 @@ class PostServices {
   //*
   static async GetMyPosts(userId, query) {
     const { isDeliveryRequest } = query;
-    let queryData = Post.find();
-    if (isDeliveryRequest) queryData.find({ user: userId, isDeliveryRequest });
+    let queryData = Post.find({ user: userId }).populate({
+      path: 'user',
+      select: 'firstName lastName',
+    });
+
+    if (isDeliveryRequest)
+      queryData.find({ 'user._id': userId, isDeliveryRequest });
+
     const posts = await queryData;
     return { posts };
   }

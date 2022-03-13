@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema(
       required: [true, `Please Provide Role`],
       default: 'user',
     },
+    // aboutMe: {},
     password: {
       type: String,
       minlength: 8,

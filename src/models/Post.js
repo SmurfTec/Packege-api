@@ -22,7 +22,11 @@ const postSchema = new mongoose.Schema(
         ref: 'Category',
       },
     ],
+
     weight: Number,
+    weightFrom: Number,
+    weightTo: Number,
+
     //* Dimensions
     length: Number,
     breadth: Number,
