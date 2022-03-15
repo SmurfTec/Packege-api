@@ -35,7 +35,6 @@ const postSchema = new mongoose.Schema(
     urgent: {
       type: String,
       enum: ['low', 'medium', 'high'],
-      required: [true, `Please Provide a priority`],
     },
 
     deliveryDate: Date,

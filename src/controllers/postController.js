@@ -9,6 +9,7 @@ const {
 exports.getPosts = catchAsync(async (req, res, next) => {
   const { posts } = await PostServices.GetAll(req.query);
 
+  console.log(' here ');
   res.status(200).json({
     status: 'success',
     length: posts.length,
@@ -63,15 +64,17 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    post: post,
+    post,
   });
 });
 
 exports.deletePost = catchAsync(async (req, res, next) => {
+  console.log('req.params', req.params);
+
   const { post } = await PostServices.Delete(req.params.id, req.user._id, next);
 
   res.status(200).json({
     status: 'success',
-    post: post,
+    post,
   });
 });
