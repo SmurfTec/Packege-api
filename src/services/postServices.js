@@ -18,7 +18,7 @@ class PostServices {
     const { isDeliveryRequest } = query;
     let queryData = Post.find({ user: userId }).populate({
       path: 'user',
-      select: 'firstName lastName',
+      select: 'firstName lastName fullName',
     });
 
     if (isDeliveryRequest)
@@ -30,7 +30,10 @@ class PostServices {
 
   //*
   static async GetSingle(Id, next) {
-    const post = await Post.findById(Id);
+    const post = await Post.findById(Id).populate({
+      path: 'user',
+      select: 'firstName lastName fullName',
+    });
     if (!post) return next(new AppError(`No Post found against id ${Id}`, 404));
     return { post };
   }
