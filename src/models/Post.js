@@ -13,8 +13,32 @@ const postSchema = new mongoose.Schema(
       trim: true,
       required: [true, 'must required a title'],
     },
-    from: String,
-    to: String,
+    from: {
+      type: String,
+      enum: [
+        'Bangladesh',
+        'India',
+        'Kenya',
+        'Nigeria',
+        'Philippines',
+        'Romania',
+        'Spain',
+        'UK',
+      ],
+    },
+    to: {
+      type: String,
+      enum: [
+        'Bangladesh',
+        'India',
+        'Kenya',
+        'Nigeria',
+        'Philippines',
+        'Romania',
+        'Spain',
+        'UK',
+      ],
+    },
     description: String,
     categories: [
       {
