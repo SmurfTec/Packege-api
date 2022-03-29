@@ -82,11 +82,14 @@ app.use(xss()); //    protect from molision code coming from html
 
 // routes
 
-app.post('/mailchimp', async (req, res, next) => {
-  const { email } = req.body;
+app.post('/api/mailchimp', async (req, res, next) => {
+  const { subscribe } = req.body;
 
+  // console.log('subscribe', subscribe);
   // construct request data
-  const data = { members: [{ email_address: email, status: 'subscribed' }] };
+  const data = {
+    members: [{ email_address: subscribe, status: 'subscribed' }],
+  };
 
   const postData = JSON.stringify(data);
 
@@ -108,7 +111,7 @@ app.post('/mailchimp', async (req, res, next) => {
       if (response.statusCode === 200) {
         res.status(200).json({
           status: 'success',
-          email,
+          subscribe,
         });
       } else {
         res.status(400).json({
