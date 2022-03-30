@@ -10,9 +10,12 @@ class AuthServices {
 
     //* check if there is any code give points to the new user and sign up users
     if (query.code) {
+      console.log('if');
       const { code } = query;
       let shareCode = await Code.findOne({ code: code });
       //check that code is expires or not
+      console.log('shareCode', shareCode);
+
       let today = new Date();
       let expires = new Date(shareCode.expiresIn);
       if (today >= expires || shareCode.status === 'notAllowed') {
@@ -23,7 +26,9 @@ class AuthServices {
       let requestedUser = await User.findById(shareCode.user);
       requestedUser.points += points;
       await requestedUser.save();
+
       shareCode.status = 'notAllowed';
+      await shareCode.save();
 
       user = await User.create({
         ...userData,
@@ -46,6 +51,7 @@ class AuthServices {
     }
     //* Simple SignUp
     else {
+      console.log('else');
       user = await User.create(userData);
       // Generate Account Activation Link
       const activationToken = user.createAccountActivationLink();
