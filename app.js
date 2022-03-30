@@ -124,8 +124,8 @@ app.post('/api/mailchimp', async (req, res, next) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
-app.use('/api/category', categoryRouter);
 app.use('/api/posts', postRouter);
+app.use('/api/category', categoryRouter);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all('*', (req, res, next) => {

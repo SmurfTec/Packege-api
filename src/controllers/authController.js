@@ -34,9 +34,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     return next(new AppError(validate.error, 400));
   }
 
-  const { user } = await AuthServices.signup(req.body);
+  // const { user } = await AuthServices.signup(req.body, req.params);
+  // createsendToken(user, 201, res);
+  const { user } = await AuthServices.signup(req.body, req.query, next);
 
-  createsendToken(user, 201, res);
+  res.status(200).json({
+    status: 'success',
+    user,
+  });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -45,7 +50,6 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError(validate.error, 400));
   }
   const { user } = await AuthServices.login(req.body, next);
-
   createsendToken(user, 200, res);
 });
 

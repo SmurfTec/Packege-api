@@ -28,6 +28,12 @@ router
   .post(protect, restrictTo('admin'), userController.createFaq);
 
 router
+  .route('/code')
+  .get(protect, userController.getCodes)
+  .post(protect, userController.shareCode);
+// .post(userController.useCode);
+
+router
   .route('/:id')
   .get(protect, userController.getUser)
   .delete(protect, restrictTo('admin'), userController.deleteUser);

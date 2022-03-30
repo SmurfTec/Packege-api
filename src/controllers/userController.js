@@ -157,3 +157,24 @@ exports.subscribe = catchAsync(async (req, res, next) => {
     subscribe,
   });
 });
+
+//* Code
+
+exports.shareCode = catchAsync(async (req, res, next) => {
+  const { code } = await UserServices.Code(req.user._id, next);
+
+  res.status(201).json({
+    status: 'success',
+    code,
+  });
+});
+
+exports.getCodes = catchAsync(async (req, res, next) => {
+  const { codes } = await UserServices.Codes();
+
+  res.status(200).json({
+    status: 'success',
+    length: codes.length,
+    codes,
+  });
+});

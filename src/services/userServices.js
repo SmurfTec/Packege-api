@@ -2,8 +2,9 @@ const User = require('../models/User');
 const Contact = require('../models/Contact');
 const Faq = require('../models/Faqs');
 const Subscribe = require('../models/Subscribe');
+const Code = require('../models/Code');
 const AppError = require('../helpers/appError');
-
+const { v1: uuidv1 } = require('uuid');
 class UserServices {
   //* USERS
   static async Users(query) {
@@ -118,6 +119,25 @@ class UserServices {
   static async Subscribe(userData) {
     const subscribe = await Subscribe.create(userData);
     return { subscribe };
+  }
+
+  //* CODE
+  static async Code(userId) {
+    let expiresIn = new Date();
+    expiresIn.setDate(expiresIn.getDate() + 1);
+
+    const code = await Code.create({
+      user: userId,
+      code: uuidv1(),
+      expiresIn,
+    });
+
+    return { code };
+  }
+
+  static async Codes() {
+    const codes = await Code.find();
+    return { codes };
   }
 }
 
