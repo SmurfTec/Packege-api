@@ -6,9 +6,9 @@ const AppError = require('../helpers/appError');
 class AuthServices {
   //* SIGNUP
   static async signup(userData, query, next) {
-    //* check if there is any code give points
-    //* to the new user and sign up users
+    let user;
 
+    //* check if there is any code give points to the new user and sign up users
     if (query.code) {
       const { code } = query;
       let shareCode = await Code.findOne({ code: code });
@@ -19,33 +19,52 @@ class AuthServices {
         return next(new AppError('Code is Expired'), 400);
       }
       // if everuthing is okay with code
+      let points = 10;
       let requestedUser = await User.findById(shareCode.user);
-      requestedUser.points += 10;
+      requestedUser.points += points;
       await requestedUser.save();
-
       shareCode.status = 'notAllowed';
+
+      user = await User.create({
+        ...userData,
+        points: points,
+      });
+      const activationToken = user.createAccountActivationLink();
+      user.save({ validateBeforeSave: false });
+      // 4 Send it to Users Email
+      const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
+      // let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
+      const message = `GO to this link to activate your App Account : ${activationURL} .`;
+      sendMail({
+        email: user.email,
+        message,
+        subject: 'Your Account Activation Link for Package App !',
+        user,
+        template: 'signupEmail.ejs',
+        url: activationURL,
+      });
+    }
+    //* Simple SignUp
+    else {
+      user = await User.create(userData);
+      // Generate Account Activation Link
+      const activationToken = user.createAccountActivationLink();
+      user.save({ validateBeforeSave: false });
+      // 4 Send it to Users Email
+      const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
+      // let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
+      const message = `GO to this link to activate your App Account : ${activationURL} .`;
+      sendMail({
+        email: user.email,
+        message,
+        subject: 'Your Account Activation Link for Package App !',
+        user,
+        template: 'signupEmail.ejs',
+        url: activationURL,
+      });
     }
 
-    let user = await User.create({userData});
-    // // Generate Account Activation Link
-    // const activationToken = user.createAccountActivationLink();
-    // user.save({ validateBeforeSave: false });
-    // // 4 Send it to Users Email
-    // const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
-    // // let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
-    // const message = `GO to this link to activate your App Account : ${activationURL} .`;
-    // sendMail({
-    //   email: user.email,
-    //   message,
-    //   subject: 'Your Account Activation Link for Package App !',
-    //   user,
-    //   template: 'signupEmail.ejs',
-    //   url: activationURL,
-    // });
-
-    return { user: shareCode };
-
-    // return;
+    return { user };
   }
 
   //* LOGIN
