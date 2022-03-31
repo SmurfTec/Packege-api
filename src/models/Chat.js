@@ -4,7 +4,7 @@ const chatSchema = new mongoose.Schema(
   {
     post: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'post',
+      ref: 'Post',
     },
     participants: [
       {
@@ -21,6 +21,11 @@ const chatSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+chatSchema.pre(/^find/, function (next) {
+  this.sort('-createdAt');
+  next();
+});
 
 // chatSchema.pre(/^find/, function (next) {
 //   this.populate({

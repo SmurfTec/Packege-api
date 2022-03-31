@@ -17,6 +17,7 @@ const userRouter = require('./src/routers/userRouter');
 const authRouter = require('./src/routers/authRouter');
 const categoryRouter = require('./src/routers/categoryRouter');
 const postRouter = require('./src/routers/postRouter');
+const chatRouter = require('./src/routers/chatRouter');
 
 // const contactRouter = require('./src/routers/contactRouter');
 // const faqRouter = require('./src/routers/faqRouter');
@@ -125,6 +126,7 @@ app.post('/api/mailchimp', async (req, res, next) => {
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
+app.use('/api/chats', chatRouter);
 app.use('/api/category', categoryRouter);
 
 // handling all (get,post,update,delete.....) unhandled routes
