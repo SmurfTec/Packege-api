@@ -71,7 +71,7 @@ exports.confirmMail = catchAsync(async (req, res, next) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1 Check if Email Exists
-  const { origin } = req.headers;
+  const origin = req.headers.origin;
   console.log('req.headers :>> ', req.headers);
 
   const { email } = await AuthServices.forgotPassword(req.body, origin, next);
