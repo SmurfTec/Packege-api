@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     image: String,
     contact: Number,
-    points: { type: Number, default: 0 },
+    points: { type: Number, default: 2 },
     firstName: {
       type: String,
       trim: true,

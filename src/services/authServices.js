@@ -8,6 +8,8 @@ class AuthServices {
   static async signup(userData, query, next) {
     let user;
 
+    console.log('Query :>> ', query);
+
     //* check if there is any code give points to the new user and sign up users
     if (query.code) {
       console.log('if');
