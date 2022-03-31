@@ -122,7 +122,7 @@ class AuthServices {
   }
 
   //* CONFIRM-EMAIL
-  static async confirmMail(hashedToken, next) {
+  static async  confirmMail(hashedToken, next) {
     const user = await User.findOne({
       activationLink: hashedToken,
     });
@@ -139,6 +139,8 @@ class AuthServices {
 
   //* FORGOT-PASSWORD
   static async forgotPassword(userData, origin, next) {
+    console.log('origin', origin);
+
     const { email } = userData;
     if (!email)
       return next(new AppError(`Plz provide Email with request`, 400));
@@ -155,11 +157,10 @@ class AuthServices {
 
     // 3 Create Password Reset Token
     const resetToken = user.createPasswordResetToken();
-
     await user.save({ validateBeforeSave: false });
-
-    let resetURL = `${origin}/resetPassword/${resetToken}`;
-
+    // let resetURL = `${origin}/resetPassword/${resetToken}`;
+    console.log('resetToken :>> ', resetToken);
+    const resetURL = `http://localhost:5000/api/auth/confirmMail/${resetToken}`;
     const message = `Forgot Password . Update your Password at this link ${resetURL} if you actually request it
    . If you did NOT forget it , simply ignore this Email`;
 

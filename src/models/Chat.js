@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const chatSchema = new mongoose.Schema(
   {
+    post: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'post',
+    },
     participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
