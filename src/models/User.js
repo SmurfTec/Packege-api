@@ -66,6 +66,10 @@ const userSchema = new mongoose.Schema(
       },
       // required: [true, 'Please confirm your password'],
     },
+    socialLogin: {
+      type: String,
+      enum: ['google', 'facebook'],
+    },
 
     activationLink: String,
     passwordResetToken: String,

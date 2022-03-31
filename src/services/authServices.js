@@ -220,6 +220,48 @@ class AuthServices {
     await user.save();
     return {};
   }
+
+  static async SocailLogin(userData, next) {
+    const { email, socialType, name, photo } = userData;
+    const user = await User.findOne({
+      email: email,
+    });
+
+    // * case 1
+    // * no user exists => signup
+
+    // * Case 2-
+    // * user exists with socialType other than that of user i.e user is logging in from google but his email is already registered either by facebook or custom login => restrict her
+
+    // * Case 3
+    // * user exists with socialType google , then login her
+
+    // * if user exists with custom signup , return
+    if (user && user.socialLogin !== socialType)
+      return next(
+        new AppError(`This email ${email} is already registered.`, 400)
+      );
+
+    let newUser;
+
+    if (!user) {
+      newUser = await User.create({
+        email: email,
+        socialLogin: socialType,
+        password: 'pass1234', //! for temporary bases , social logins dont have password
+        passwordConfirm: 'pass1234',
+        firstName: name?.split(' ')?.[0],
+        lastName: name?.split(' ')?.[1],
+        photo: photo,
+        role: 'user',
+        activated: true,
+      });
+    } else {
+      newUser = user;
+    }
+
+    return { newUser };
+  }
 }
 
 module.exports = AuthServices;

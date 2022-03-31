@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/signUp', authController.signup);
 router.post('/logIn', authController.login);
+router.post('/sociallogin', authController.socialLogin);
 
 router.route('/confirmMail/:activationLink').get(authController.confirmMail);
 router.route('/forgotPassword').post(authController.forgotPassword);

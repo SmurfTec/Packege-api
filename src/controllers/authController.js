@@ -53,6 +53,12 @@ exports.login = catchAsync(async (req, res, next) => {
   createsendToken(user, 200, res);
 });
 
+exports.socialLogin = catchAsync(async (req, res, next) => {
+  const { newUser } = await AuthServices.SocailLogin(req.body, next);
+  // * Generate JWT
+  createsendToken(newUser, 200, res);
+});
+
 exports.confirmMail = catchAsync(async (req, res, next) => {
   // 1 Hash The Avtivation Link
 
