@@ -8,15 +8,17 @@ router.use(protect);
 
 router
   .route('/')
-  //.get(chatController.getAllChats) // ! Delete in futre
+  //.get(chatController.getAllChats) // ! Delete in future
   .post(chatController.addNewChat);
 
 router.get('/me', chatController.getMyChats);
+
+router.route('/message').post(chatController.addNewMessage);
 
 router
   .route('/:id')
   .get(chatController.getChat)
   //.patch(chatController.updateChat)
-  .delete(chatController.deleteChat); // ! delete in future
+  .delete(chatController.deleteChat); // ! Delete in future
 
 module.exports = router;

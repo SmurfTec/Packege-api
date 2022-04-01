@@ -11,7 +11,7 @@ router
   .get(protect, userController.getMe)
   .patch(protect, userController.updateMe);
 
-router.route('/').get(protect, restrictTo('admin'), userController.getAllUsers);
+router.route('/').get(protect, userController.getAllUsers);
 
 router.patch('/updatePassword', protect, authController.updatePassword);
 

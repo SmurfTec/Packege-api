@@ -17,7 +17,7 @@ const chatSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message',
       },
-    ],
+    ], 
   },
   { timestamps: true }
 );
@@ -26,14 +26,6 @@ chatSchema.pre(/^find/, function (next) {
   this.sort('-createdAt');
   next();
 });
-
-// chatSchema.pre(/^find/, function (next) {
-//   this.populate({
-//     path: 'participants',
-//     select: 'name photo firstName lastName',
-//   }).populate({ path: 'messages' });
-//   next();
-// });
 
 const Chat = mongoose.model('Chat', chatSchema);
 module.exports = Chat;
