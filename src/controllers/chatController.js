@@ -93,7 +93,11 @@ exports.addNewChat = catchAsync(async (req, res, next) => {
 
 exports.addNewMessage = catchAsync(async (req, res, next) => {
   const { text, chatId } = req.body;
-  //* find Chat
+
+  console.log('text :>> ', text);
+  console.log('chatId :>> ', chatId);
+
+  // * find Chat
   let chat = await Chat.findById(chatId);
   if (!chat) return next(new AppError(`Can't find chat for id ${chatId}`, 404));
 

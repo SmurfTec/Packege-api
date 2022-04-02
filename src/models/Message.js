@@ -18,8 +18,12 @@ const messageSchema = new mongoose.Schema(
 );
 
 messageSchema.pre(/^find/, function (next) {
-  this.populate({ path: 'sender', select: 'firstName lastName image' });
+  this.sort('-createdAt');
+  next();
+});
 
+messageSchema.pre(/^find/, function (next) {
+  this.populate({ path: 'sender', select: 'firstName lastName image' });
   next();
 });
 
