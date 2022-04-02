@@ -1,6 +1,7 @@
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
+const Post = require('../models/Post');
 const AppError = require('../helpers/appError');
 const catchAsync = require('../helpers/catchAsync');
 
@@ -9,7 +10,7 @@ exports.getMyChats = catchAsync(async (req, res, next) => {
 
   await Chat.populate(chats, {
     path: 'participants',
-    select: 'firstName lastName image',
+    select: 'fullName image',
   });
   await Chat.populate(chats, {
     path: 'messages',
@@ -33,41 +34,58 @@ exports.getAllChats = catchAsync(async (req, res, next) => {
 });
 
 exports.addNewChat = catchAsync(async (req, res, next) => {
-  console.log('req.body :>> ', req.body);
+  const { text, post } = req.body;
+  const sender = req.user._id;
 
-  let alreadyChat = await Chat.findOne({
+  //  Check post
+  const postt = await Post.findById(post);
+  if (!postt) return next(new AppError(`Can't find Post with id ${receiver}`));
+
+  const receiver = postt.user;
+  //  Check if receiver is a user
+  const receiverr = await User.findById(receiver);
+  if (!receiverr)
+    return next(new AppError(`Can't find user with id ${receiver}`));
+
+  // check chat is already created
+  let chat = await Chat.findOne({
     $and: [
       {
-        participants: { $in: [req.user._id] },
+        participants: { $in: [sender] },
       },
       {
-        participants: { $in: [req.body.receiver] },
+        participants: { $in: [receiver] },
       },
     ],
   });
-
-  if (alreadyChat)
-    return next(new AppError(`Chat Already exists between users`, 400));
-
-  // * Check if receiver is a user
-  const receiver = await User.findById(req.body.receiver);
-  if (!receiver)
-    return next(new AppError(`Can't find user with id ${req.body.receiver}`));
-
-  const chat = await Chat.create({
-    participants: [req.user._id, req.body.receiver],
+  //create first msg
+  const newMessage = await Message.create({
+    text,
+    sender,
+    post,
   });
+
+  if (!chat) {
+    chat = await Chat.create({
+      participants: [sender, receiver],
+    });
+  }
+
+  // push new Message to existing chat
+  chat.messages = [...chat.messages, newMessage._id];
+
+  await chat.save();
 
   await Chat.populate(chat, {
     path: 'participants',
-    select: 'firstName lastName image',
+    select: 'fullName image',
   });
   await Chat.populate(chat, {
     path: 'messages',
     model: Message,
   });
 
-  res.status(201).json({
+  return res.status(200).json({
     status: 'success',
     chat,
   });
@@ -75,7 +93,6 @@ exports.addNewChat = catchAsync(async (req, res, next) => {
 
 exports.addNewMessage = catchAsync(async (req, res, next) => {
   const { text, chatId } = req.body;
-  // console.log('req.body :>> ', req.body);
   //* find Chat
   let chat = await Chat.findById(chatId);
   if (!chat) return next(new AppError(`Can't find chat for id ${chatId}`, 404));
@@ -88,12 +105,6 @@ exports.addNewMessage = catchAsync(async (req, res, next) => {
 
   //* push new Message to existing chat
   chat.messages = [...chat.messages, newMessage._id];
-  await chat.save();
-
-  // * Receiver will the 2nd participant of chat
-  chat.participants[0]._id.toString() === req.user._id.toString()
-    ? chat.participants[1]
-    : chat.participants[0];
   await chat.save();
 
   await Chat.populate(chat, {
@@ -126,6 +137,7 @@ exports.getChat = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteChat = catchAsync(async (req, res, next) => {
+  //* only reciever can delete chat
   const chat = await Chat.findByIdAndDelete(req.params.id);
 
   if (!chat)

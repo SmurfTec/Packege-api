@@ -8,6 +8,11 @@ const messageSchema = new mongoose.Schema(
     },
     // * Receiver will be 2nd person of chat
     text: String,
+
+    post: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
+    },
   },
   { timestamps: true }
 );

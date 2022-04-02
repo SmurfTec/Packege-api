@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 const chatSchema = new mongoose.Schema(
   {
-    post: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post',
-    },
     participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +13,7 @@ const chatSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message',
       },
-    ], 
+    ],
   },
   { timestamps: true }
 );
