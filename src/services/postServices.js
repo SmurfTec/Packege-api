@@ -30,10 +30,7 @@ class PostServices {
 
   //*
   static async GetSingle(Id, next) {
-    const post = await Post.findById(Id).populate({
-      path: 'user',
-      select: 'firstName lastName fullName',
-    });
+    const post = await Post.findById(Id);
     if (!post) return next(new AppError(`No Post found against id ${Id}`, 404));
     return { post };
   }

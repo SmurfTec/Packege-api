@@ -79,7 +79,7 @@ postSchema.pre(/^find/, function (next) {
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'categories',
-  });
+  }).populate({ path: 'user' });
   next();
 });
 
