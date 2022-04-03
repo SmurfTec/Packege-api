@@ -158,9 +158,9 @@ class AuthServices {
     // 3 Create Password Reset Token
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
-    // let resetURL = `${origin}/resetPassword/${resetToken}`;
+    let resetURL = `${origin}/resetPassword/${resetToken}`;
     console.log('resetToken :>> ', resetToken);
-    const resetURL = `http://localhost:3000/confirmMail/${resetToken}`;
+    // const resetURL = `http://localhost:3000/confirmMail/${resetToken}`;
     const message = `Forgot Password . Update your Password at this link ${resetURL} if you actually request it
    . If you did NOT forget it , simply ignore this Email`;
 

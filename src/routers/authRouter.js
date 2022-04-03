@@ -9,7 +9,7 @@ router.post('/logIn', authController.login);
 router.post('/sociallogin', authController.socialLogin);
 
 router.route('/confirmMail/:activationLink').get(authController.confirmMail);
-router.route('/forgotPassword').post(authController.forgotPassword);
+router.route('/forgotPassword').patch(authController.forgotPassword);
 router.route('/update-password').patch(protect, authController.updatePassword);
 router.route('/resetPassword/:resetToken').patch(authController.resetPassword);
 
