@@ -101,11 +101,12 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     next
   );
 
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createsendToken(user, 200, res);
+  // const token = signToken(user._id);
+  // res.status(200).json({
+  //   status: 'success',
+  //   token,
+  // });
 });
 
 //    Update Password for only logged in user
