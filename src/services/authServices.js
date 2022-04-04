@@ -39,8 +39,8 @@ class AuthServices {
       const activationToken = user.createAccountActivationLink();
       user.save({ validateBeforeSave: false });
       // 4 Send it to Users Email
-      const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
-      // let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
+      // const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
+      let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
       const message = `GO to this link to activate your App Account : ${activationURL} .`;
       sendMail({
         email: user.email,
@@ -59,8 +59,8 @@ class AuthServices {
       const activationToken = user.createAccountActivationLink();
       user.save({ validateBeforeSave: false });
       // 4 Send it to Users Email
-      const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
-      // let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
+      // const activationURL = `http://localhost:6000/api/users/confirmMail/${activationToken}`;
+      let activationURL = `${req.headers.origin}/confirmMail/${activationToken}`;
       const message = `GO to this link to activate your App Account : ${activationURL} .`;
       sendMail({
         email: user.email,
