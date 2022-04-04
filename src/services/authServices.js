@@ -5,7 +5,7 @@ const AppError = require('../helpers/appError');
 
 class AuthServices {
   //* SIGNUP
-  static async signup(userData, query, next) {
+  static async signup(userData, query, req, next) {
     let user;
 
     console.log('Query :>> ', query);
@@ -81,7 +81,7 @@ class AuthServices {
     const { email, password } = userData;
     if (!email || !password) {
       //  check email and password exist
-      return next(new AppError(' please proveide email and password ', 400));
+      return next(new AppError('Please proveide email and password ', 400));
     }
     const user = await User.findOne({ email }).select('+password'); // select expiclity password
     if (!user)
@@ -94,7 +94,7 @@ class AuthServices {
       !(await user.correctPassword(password, user.password))
     ) {
       // candinate password,correctpassword
-      return next(new AppError('incorrect email or password', 401));
+      return next(new AppError('Incorrect Password', 401));
     }
 
     console.log(`user`, user);
@@ -134,7 +134,7 @@ class AuthServices {
     user.activated = true;
     user.activationLink = undefined;
     await user.save({ validateBeforeSave: false });
-    return;
+    return user;
   }
 
   //* FORGOT-PASSWORD

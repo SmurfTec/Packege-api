@@ -36,11 +36,11 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   // const { user } = await AuthServices.signup(req.body, req.params);
   // createsendToken(user, 201, res);
-  const { user } = await AuthServices.signup(req.body, req.query, next);
+  const { user } = await AuthServices.signup(req.body, req.query, req, next);
 
   res.status(200).json({
     status: 'success',
-    user,
+    message: `Confirm your email through link sent to your email!`,
   });
 });
 
@@ -67,12 +67,10 @@ exports.confirmMail = catchAsync(async (req, res, next) => {
     .update(req.params.activationLink)
     .digest('hex');
 
-  await AuthServices.confirmMail(hashedToken, next);
+  const user = await AuthServices.confirmMail(hashedToken, next);
+  console.log('user', user);
 
-  res.status(200).json({
-    status: 'Success',
-    message: 'Account has been Activated Successfully !',
-  });
+  if (user) createsendToken(user, 200, res);
 });
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
