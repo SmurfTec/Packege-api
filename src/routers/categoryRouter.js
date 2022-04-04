@@ -1,6 +1,6 @@
 const express = require('express');
 
-const categoryController = require('../controllers/CategoryController');
+const categoryController = require('../controllers/categoryController');
 const protect = require('../middlewares/protect');
 const restrictTo = require('../middlewares/restrictTo');
 
