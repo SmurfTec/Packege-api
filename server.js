@@ -11,6 +11,13 @@ process.on('uncaughtException', (error) => {
 const app = require('./app');
 // database connection
 DBConnect();
+
+if (process.env.NODE_ENV === 'production') {
+  console.log = () => {};
+  console.error = () => {};
+  console.warn = () => {};
+}
+
 // server
 const port = process.env.PORT || 7000;
 const server = app.listen(port, () => {
