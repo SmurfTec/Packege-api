@@ -89,6 +89,11 @@ class AuthServices {
 
     console.log(`user.role`, user.role);
 
+    if (user.socialLogin)
+      return next(
+        new AppError(`This account uses ${user.socialLogin} Login`, 400)
+      );
+
     if (
       !user || // check user exist and password correct
       !(await user.correctPassword(password, user.password))
