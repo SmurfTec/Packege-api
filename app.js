@@ -20,6 +20,7 @@ const postRouter = require('./src/routers/postRouter');
 const chatRouter = require('./src/routers/chatRouter');
 
 // const contactRouter = require('./src/routers/contactRouter');
+
 // const faqRouter = require('./src/routers/faqRouter');
 
 const globalErrorHandler = require('./src/middlewares/globalErrorHandler');
