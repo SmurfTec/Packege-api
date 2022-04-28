@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      enum: ['Mr', 'Mr.s'],
+      enum: ['Mr', 'Mrs', 'Ms', 'Dr', 'Miss'],
     },
     image: String,
     contact: Number,

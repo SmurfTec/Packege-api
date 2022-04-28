@@ -3,12 +3,19 @@ const AppError = require('../helpers/appError');
 
 class PostServices {
   //*
-
   static async GetAll(query) {
     const { isDeliveryRequest } = query;
     let queryData = Post.find();
     if (isDeliveryRequest) queryData.find({ isDeliveryRequest });
-    const posts = await queryData;
+    let posts = await queryData;
+
+    const date = new Date();
+    console.log('date :>> ', date);
+    posts = posts.filter((post) => {
+      // const d = new Date(post.deliveryDate);
+      // return d >= date;
+      return post.deliveryDate >= date;
+    });
 
     return { posts };
   }
@@ -30,7 +37,10 @@ class PostServices {
 
   //*
   static async GetSingle(Id, next) {
-    const post = await Post.findById(Id);
+    const post = await Post.findById(Id).populate({
+      path: 'user',
+      select: 'firstName lastName fullName',
+    });
     if (!post) return next(new AppError(`No Post found against id ${Id}`, 404));
     return { post };
   }

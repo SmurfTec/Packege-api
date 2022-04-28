@@ -33,6 +33,8 @@ class UserServices {
 
   //* UPDATEME
   static async UpdateMe(userId, body, next) {
+    console.log('body', body);
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { ...body },
