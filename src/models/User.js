@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       enum: ['Mr', 'Mrs', 'Ms', 'Dr', 'Miss'],
     },
     image: String,
-    contact: Number,
+    contact: { type: Number, default: 0 },
     points: { type: Number, default: 2 },
     firstName: {
       type: String,

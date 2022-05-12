@@ -12,13 +12,15 @@ router
   .post(chatController.addNewChat);
 
 router.get('/me', chatController.getMyChats);
-
-router.route('/message').post(chatController.addNewMessage);
+router.patch('/read', chatController.readChat);
+router.post('/message', chatController.addNewMessage);
 
 router
   .route('/:id')
   .get(chatController.getChat)
   //.patch(chatController.updateChat)
   .delete(chatController.deleteChat); // ! Delete in future
+
+router.patch('/:id/read', chatController.readSingleChat);
 
 module.exports = router;

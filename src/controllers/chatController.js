@@ -167,3 +167,58 @@ exports.updateChat = catchAsync(async (req, res, next) => {
     chat,
   });
 });
+
+//* read chat on see more
+exports.readChat = catchAsync(async (req, res, next) => {
+  let chats = await Chat.find({ participants: { $in: [req.user._id] } });
+
+  chats.map(async (chat) => {
+    await chat.messages.map(async (message) => {
+      console.log('message', message);
+      await Message.findByIdAndUpdate(message, { isRead: true }, { new: true });
+    });
+  });
+
+  let Chats = await Chat.find({ participants: { $in: [req.user._id] } });
+  await Chat.populate(Chats, {
+    path: 'participants',
+    select: 'fullName image',
+  });
+  await Chat.populate(Chats, {
+    path: 'messages',
+    model: Message,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    length: chats.length,
+    chats: Chats,
+  });
+});
+
+exports.readSingleChat = catchAsync(async (req, res, next) => {
+  let chat = await Chat.findById(req.params.id);
+  if (!chat) {
+    return next(new AppError(`Can't find chat for id ${req.params.id}`, 404));
+  }
+
+  chat.messages.map(async (message) => {
+    console.log('message', message);
+    await Message.findByIdAndUpdate(message, { isRead: true }, { new: true });
+  });
+
+  let Chatt = await Chat.findById(req.params.id);
+  await Chat.populate(Chatt, {
+    path: 'participants',
+    select: 'fullName image',
+  });
+  await Chat.populate(Chatt, {
+    path: 'messages',
+    model: Message,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    chat: Chatt,
+  });
+});
