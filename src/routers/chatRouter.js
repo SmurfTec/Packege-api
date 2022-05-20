@@ -21,6 +21,6 @@ router
   //.patch(chatController.updateChat)
   .delete(chatController.deleteChat); // ! Delete in future
 
-router.patch('/:id/read', chatController.readSingleChat);
+// router.patch('/:id/read', chatController.readSingleChat);
 
 module.exports = router;
