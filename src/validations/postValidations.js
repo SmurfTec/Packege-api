@@ -4,7 +4,6 @@ module.exports = {
   postValidation: Joi.object({
     categories: Joi.array().min(1),
     isDeliveryRequest: Joi.boolean(),
-    title: Joi.string().trim().required(),
     from: Joi.string().trim().required(),
     to: Joi.string().trim().required(),
     description: Joi.string().trim().min(20).required(),
@@ -23,7 +22,6 @@ module.exports = {
   postUpdateValidation: Joi.object({
     categories: Joi.array().min(1),
     isDeliveryRequest: Joi.boolean(),
-    title: Joi.string().trim(),
     from: Joi.string().trim(),
     to: Joi.string().trim(),
     description: Joi.string().trim().min(20),

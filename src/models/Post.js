@@ -7,12 +7,6 @@ const postSchema = new mongoose.Schema(
       ref: 'User',
     },
     isDeliveryRequest: Boolean,
-    title: {
-      type: String,
-      unique: true,
-      trim: true,
-      required: [true, 'must required a title'],
-    },
     from: {
       type: String,
       enum: [
