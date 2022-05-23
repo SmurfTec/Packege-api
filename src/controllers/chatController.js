@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const AppError = require('../helpers/appError');
 const catchAsync = require('../helpers/catchAsync');
+const sendMail = require('../helpers/email');
 
 exports.getMyChats = catchAsync(async (req, res, next) => {
   let chats = await Chat.find({ participants: { $in: [req.user._id] } });
@@ -143,9 +144,24 @@ exports.getChat = catchAsync(async (req, res, next) => {
 exports.deleteChat = catchAsync(async (req, res, next) => {
   //* only reciever can delete chat
   const chat = await Chat.findByIdAndDelete(req.params.id);
-
   if (!chat)
     return next(new AppError(`Can't find chat for id ${req.params.id}`, 404));
+
+  let user2 = chat.participants.find(
+    (user) => user.toString() !== req.user._id.toString()
+  );
+
+  const User1 = await User.findById(req.user._id);
+  const User2 = await User.findById(user2);
+  let message = `Hi ${User.name} Your coversation with ${User1.name} is ended`;
+  //* Send email to other User
+  sendMail({
+    email: User2.email,
+    message,
+    subject: 'Your Message related Update from Package App !',
+    user: User2,
+    template: 'simpleMail.ejs',
+  });
 
   res.status(200).json({
     status: 'success',
