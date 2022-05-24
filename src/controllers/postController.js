@@ -5,6 +5,7 @@ const {
   postValidation,
   postUpdateValidation,
 } = require('../validations/postValidations');
+const Category = require('../models/Category');
 
 exports.getPosts = catchAsync(async (req, res, next) => {
   const { posts } = await PostServices.GetAll(req.query);
@@ -34,6 +35,11 @@ exports.createPost = catchAsync(async (req, res, next) => {
   }
 
   const { post } = await PostServices.Create(req.body, req.user._id);
+
+  await PostServices.populate(post, {
+    path: 'categories',
+    model: Category,
+  });
 
   res.status(201).json({
     status: 'success',
